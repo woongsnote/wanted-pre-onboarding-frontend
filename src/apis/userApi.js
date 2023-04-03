@@ -1,4 +1,4 @@
-import api from ".";
+import {api} from ".";
 
 /** 회원가입  */
 export const signUp = async (email, password) => {
