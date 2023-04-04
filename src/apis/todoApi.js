@@ -1,18 +1,19 @@
-import { authApi } from ".";
+import axiosInstance from ".";
 
 export const getTodos = async () => {
-  const response = await authApi.get("/todos");
-  return response.data;
+  const response = await axiosInstance.get("/todos");
+  console.log(response);
+  return response;
 };
 
 export const createTodo = async (todo) => {
-  return await authApi.post("/todos", { todo });
+  return await axiosInstance.post("/todos", { todo });
 };
 
 export const updateTodo = async (id, todo, isCompleted) => {
-  return await authApi.put(`/todos/${id}`, { todo, isCompleted });
+  return await axiosInstance.put(`/todos/${id}`, { todo, isCompleted });
 };
 
 export const deleteTodo = async (id) => {
-  return await authApi.delete(`/todos/${id}`);
+  return await axiosInstance.delete(`/todos/${id}`);
 };

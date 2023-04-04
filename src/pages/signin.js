@@ -2,20 +2,20 @@ import { useEffect, useState } from "react";
 import { emailCheck, passwordCheck } from "../utils/validate";
 import { signIn } from "../apis/userApi";
 import { useNavigate } from "react-router-dom";
-import LoginContainer from "../components/LoginContainer";
 import InputContainer from "../components/InputContainer";
+import MainContainer from "../components/MainContainer";
+import BottomContainer from "../components/BottomContainer";
 
 export default function SignIn() {
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      navigate("/todo");
-    }
-  });
-
   const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (localStorage.getItem("access_token")) {
+      navigate("/todo");
+    }
+  }, [navigate]);
 
   const onChangeEmail = (event) => {
     setEmail(event.target.value);
@@ -29,12 +29,11 @@ export default function SignIn() {
   const onSubmitSignIn = async (event) => {
     event.preventDefault();
     if (emailCheck(email) && passwordCheck(password)) {
-      const response = await signIn(email, password);
-
-      if (response.status === 200) {
-        localStorage.setItem("token", response.data.access_token);
-        navigate("/todo");
-      }
+      await signIn(email, password)
+        .then((response) => {
+          localStorage.setItem("access_token", response.data.access_token);
+        })
+        .then(() => navigate("/todo"));
     } else {
       setEmail("");
       setPassword("");
@@ -42,7 +41,7 @@ export default function SignIn() {
   };
 
   return (
-    <LoginContainer>
+    <MainContainer>
       <h2>로그인</h2>
       <form onSubmit={onSubmitSignIn}>
         <InputContainer>
@@ -69,11 +68,14 @@ export default function SignIn() {
         </InputContainer>
         <button
           data-testid="signin-button"
-          disabled={!(emailCheck(email) && passwordCheck(password))}
-         >
+          disabled={!(emailCheck(email) && passwordCheck(password))}>
           로그인
         </button>
       </form>
-    </LoginContainer>
+      <BottomContainer>
+        <p>아직 계정이 없으신가요?</p>
+        <button onClick={() => navigate("/signup")}>회원가입</button>
+      </BottomContainer>
+    </MainContainer>
   );
 }

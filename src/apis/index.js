@@ -1,21 +1,38 @@
 import axios from "axios";
 
-const baseURL = "http://localhost:8000";
-const access_token = localStorage.getItem("token");
+const baseURL = "https://www.pre-onboarding-selection-task.shop"
 
-const api = axios.create({
+const axiosInstance = axios.create({
   baseURL: baseURL,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-const authApi = axios.create({
-  baseURL: baseURL,
-  headers: {
-    Authorization: "Bearer " + access_token,
-    "Content-Type": "application/json",
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("access_token");
+    try {
+      if (token !== null) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+      return config;
+    } catch (error) {
+      console.error(error);
+    }
   },
-});
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
-export { api, authApi };
+axiosInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+export default axiosInstance;

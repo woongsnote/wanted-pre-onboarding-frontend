@@ -2,20 +2,20 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { emailCheck, passwordCheck } from "../utils/validate";
 import { signUp } from "../apis/userApi";
-import LoginContainer from "../components/LoginContainer";
 import InputContainer from "../components/InputContainer";
+import MainContainer from "../components/MainContainer";
+import BottomContainer from "../components/BottomContainer";
 
 export default function SignUp() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (localStorage.getItem("access_token")) {
       navigate("/todo");
     }
   });
-
-  const navigate = useNavigate();
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
   const onChangeEmail = (event) => {
     setEmail(event.target.value);
@@ -39,7 +39,7 @@ export default function SignUp() {
     }
   };
   return (
-    <LoginContainer>
+    <MainContainer>
       <h2>회원가입</h2>
       <form onSubmit={onSubmitSignUp}>
         <InputContainer>
@@ -70,6 +70,10 @@ export default function SignUp() {
           회원가입
         </button>
       </form>
-    </LoginContainer>
+      <BottomContainer>
+        <p>이미 계정이 있으신가요?</p>
+        <button onClick={() => navigate("/signin")}>로그인</button>
+      </BottomContainer>
+    </MainContainer>
   );
 }
