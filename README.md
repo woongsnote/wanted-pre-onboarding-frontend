@@ -17,4 +17,4 @@
 
 2. 배포 URL에 접속해서 실행
 
-   [https://wanted-pre-onboarding-frontend-woongsnote.vercel.app/signin]("https://wanted-pre-onboarding-frontend-woongsnote.vercel.app/signin")
+   [https://wanted-pre-onboarding-frontend-woongsnote.vercel.app/signin](https://wanted-pre-onboarding-frontend-woongsnote.vercel.app/signin)
